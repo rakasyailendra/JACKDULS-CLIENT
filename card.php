@@ -1,8 +1,17 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['loggedin'])) {
+    header("Location: ../login.php?redirect=" . urlencode($_SERVER['REQUEST_URI']));
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <link rel="icon" href="/ASSETS/head logo.jpeg" type="image/png">
+    <link rel="icon" href="/ASSETS/head-logo.jpeg" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JACKDULS Card&reg;</title>
@@ -40,8 +49,13 @@
         <nav style="padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); background-color: rgba(255, 255, 255, 0.6);"
             class="navbar navbar-expand-lg sticky-top">
             <div class="container">
-                <!-- LOGO -->
-                <a style="font-weight: bold;" class="navbar-brand" href="/">JACKDULS&reg;</a>
+                
+<a style="font-weight: bold; cursor: pointer; margin-left: 20px; justify-content: center; align-items: center; display: flex;" 
+   class="navbar-brand" 
+   onclick="window.history.back()">
+  <img style="height: 20px; margin-right:5px;" src="ASSETS\iconback.png" alt="">Kembali
+</a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -51,24 +65,28 @@
                     <!-- MENU -->
                     <ul style="font-weight:bold;" class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                            <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link active dropdown-toggle" href="shop.html" role="button"
+                            <a class="nav-link active dropdown-toggle" href="shop.php" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Shop
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/SHOP/kaos.html">Kaos</a></li>
-                                <li><a class="dropdown-item" href="/SHOP/celana.html">Celana</a></li>
-                                <li><a class="dropdown-item" href="/SHOP/topi.html">Topi</a></li>
-                                <li><a class="dropdown-item" href="/SHOP/jacket.html">Jacket</a></li>
+                                <li><a class="dropdown-item" href="SHOP/kaos.php">Kaos</a></li>
+                                <li><a class="dropdown-item" href="SHOP/celana.php">Celana</a></li>
+                                <li><a class="dropdown-item" href="SHOP/topi.php">Topi</a></li>
+                                <li><a class="dropdown-item" href="SHOP/jacket.php">Jacket</a></li>
                             </ul>
                         </li>
+                        <a class="nav-link active nav-hover-effect" aria-current="page" href="support.php">
+                            <span class="nav-link-text">Support</span>
+                            <span class="nav-hover-line"></span>
+                        </a>
                     </ul>
                 </div>
                 <a href="#">
-                    <img style="height:28px; width:28px;" src="/ASSETS/shopcart.png" alt="">
+                    <img style="height:28px; width:28px;" src="ASSETS/shopcart.png" alt="">
                 </a>
             </div>
         </nav>
@@ -76,13 +94,13 @@
 
 
         <!-- FOOTER -->
-        <footer class="bg-dark text-white pt-4">
+        <footer class="bg-black text-white pt-4">
             <div class="container text-center text-md-start">
                 <div class="row">
                     <!-- Branding -->
                     <div class="col-md-4 mb-4">
                         <h5 class="fw-bold">JACKDULS</h5>
-                        <p class="text-muted">Fashion that fits your freedom. Discover your style with JACKDULS Pants®.
+                        <p class="">Fashion that fits your freedom. Discover your style with JACKDULS Pants®.
                         </p>
                     </div>
 
@@ -90,8 +108,8 @@
                     <div class="col-md-4 mb-4">
                         <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
                         <ul class="list-unstyled">
-                            <li><a href="/" class="text-white text-decoration-none">Home</a></li>
-                            <li><a href="/SHOP/kaos.html" class="text-white text-decoration-none">Shop</a></li>
+                            <li><a href="index.php" class="text-white text-decoration-none">Home</a></li>
+                            <li><a href="SHOP/kaos.php" class="text-white text-decoration-none">Shop</a></li>
                         </ul>
                     </div>
 

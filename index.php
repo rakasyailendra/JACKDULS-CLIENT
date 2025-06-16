@@ -1,8 +1,9 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <link rel="icon" href="/ASSETS/head logo.png" type="image/png">
+    <link rel="icon" href="/ASSETS/head-logo.jpeg" type="image/jpeg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JACKDULS&reg;</title>
@@ -42,6 +43,7 @@
             transform: scale(0.5);
             opacity: 0;
         }
+
         to {
             transform: scale(1);
             opacity: 1;
@@ -72,6 +74,7 @@
             opacity: 0;
             transform: translateY(30px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -162,7 +165,7 @@
     .dropdown-menu-animated .dropdown-item:hover {
         transform: translateX(0);
         opacity: 1;
-        background-color: rgba(0,0,0,0.05);
+        background-color: rgba(0, 0, 0, 0.05);
     }
 
     /* Cart Icon Animation */
@@ -198,10 +201,12 @@
             transform: scale(0.8);
             box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
         }
+
         70% {
             transform: scale(1.1);
             box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
         }
+
         100% {
             transform: scale(0.8);
             box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
@@ -224,6 +229,7 @@
         0% {
             transform: translate(0, 0);
         }
+
         100% {
             transform: translate(-100%, 0);
         }
@@ -440,9 +446,12 @@
     }
 
     @keyframes cartBounce {
-        0%, 100% {
+
+        0%,
+        100% {
             transform: translateY(0) scale(1.2);
         }
+
         50% {
             transform: translateY(-5px) scale(1.3);
         }
@@ -456,7 +465,7 @@
 <body>
     <!-- Page Load Animation -->
     <div class="page-load-animation">
-        <img src="/ASSETS/head logo.jpeg" alt="JACKDULS Logo" class="loader-logo">
+        <img src="ASSETS\head-logo.jpeg" alt="JACKDULS Logo" class="loader-logo">
     </div>
 
     <!-- NAVBAR -->
@@ -474,34 +483,90 @@
                 <!-- MENU -->
                 <ul style="font-weight:bold;" class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active nav-hover-effect" aria-current="page" href="/">
+                        <a class="nav-link active nav-hover-effect" aria-current="page" href="index.php">
                             <span class="nav-link-text">Home</span>
                             <span class="nav-hover-line"></span>
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link active dropdown-toggle nav-hover-effect" href="shop.html" role="button"
+                        <a class="nav-link active dropdown-toggle nav-hover-effect" href="shop.php" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="nav-link-text">Shop</span>
                             <span class="nav-hover-line"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-animated">
-                            <li><a class="dropdown-item" href="/SHOP/kaos.html">Kaos</a></li>
-                            <li><a class="dropdown-item" href="/SHOP/celana.html">Celana</a></li>
-                            <li><a class="dropdown-item" href="/SHOP/topi.html">Topi</a></li>
-                            <li><a class="dropdown-item" href="/SHOP/jacket.html">Jacket</a></li>
+                            <li><a class="dropdown-item" href="shop/kaos.php">Kaos</a></li>
+                            <li><a class="dropdown-item" href="shop/celana.php">Celana</a></li>
+                            <li><a class="dropdown-item" href="shop/topi.php">Topi</a></li>
+                            <li><a class="dropdown-item" href="shop/jacket.php">Jacket</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+    <?php if (isset($_SESSION['loggedin'])): ?>
+        <a class="nav-link active nav-hover-effect" href="support.php">
+            <span class="nav-link-text">Support</span>
+            <span class="nav-hover-line"></span>
+        </a>
+    <?php else: ?>
+        <a class="nav-link active nav-hover-effect" href="login.php?redirect=support.php">
+            <span class="nav-link-text">Support</span>
+            <span class="nav-hover-line"></span>
+        </a>
+    <?php endif; ?>
+</li>
                 </ul>
             </div>
-            <a href="card.html" class="cart-icon-wrapper">
-                <img style="height:28px; width:28px;" src="/ASSETS/shopcart.png" alt="">
-                <span class="cart-pulse"></span>
-            </a>
-        </div>
+
+            <!-- CART ICON  -->
+                <a href="<?php echo isset($_SESSION['loggedin']) ? 'card.php' : 'login.php?redirect=card.php'; ?>" 
+   id="cartIcon" class="cart-icon-wrapper">
+    <img style="height:24px; width:24px;" src="ASSETS/SHOPcart.png" alt="Cart">
+    <span class="cart-pulse"></span>
+</a>
+<script>
+
+adocument.addEventListener('DOMContentLoaded', function () {
+    const cartLink = document.getElementById('cartIcon');
+
+    if (cartLink && cartLink.getAttribute('href').includes('login.php')) {
+        cartLink.addEventListener('click', function (e) {
+            alert('Anda harus login terlebih dahulu.');
+            // Browser otomatis mengarahkan ke login.php?redirect=card.php
+        });
+    }
+});
+</script>
+
+        <?php if (isset($_SESSION['loggedin'])): ?>
+    <a style="color:black; font-weight:bold" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal" class="btn btn-sm btn-outline-light ms-2">Logout</a>
+<?php else: ?>
+    <a style="color:black; font-weight:bold" href="login.php?redirect=index.php" class="btn btn-sm btn-outline-light ms-2">Login</a>
+<?php endif; ?>
+                
+            </div>
+
     </nav>
 
-    <div class="marquee bg-dark text-white py-2 animate-on-load">
+    <!-- Modal Konfirmasi Logout -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Konfirmasi Logout</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Apakah Anda yakin ingin keluar?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <a href="logout.php" class="btn btn-danger">Ya, Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="marquee bg-black text-white py-2 animate-on-load">
         <span style="font-size: 1.5rem;">Welcome to JACKDULS&reg; - Streetwear for the Brave &nbsp;&nbsp;&nbsp; |
             &nbsp;&nbsp;&nbsp; Free Shipping over Rp500.000!</span>
     </div>
@@ -511,12 +576,12 @@
         <div class="carousel-inner">
             <div class="carousel-item active" data-bs-interval="2000">
                 <video class="d-block w-100" autoplay loop muted playsinline>
-                    <source src="/ASSETS/videoberanda.mp4" type="video/mp4">
+                    <source src="ASSETS\videoberanda.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
         <div class="slogan-image-container animate-on-load">
-            <img src="/ASSETS/sloganberanda.png" alt="Slogan Jackduls" class="img-fluid w-100">
+            <img src="ASSETS/sloganberanda.png" alt="Slogan Jackduls" class="img-fluid w-100">
         </div>
     </div>
 
@@ -559,10 +624,10 @@
 
     <!-- HORIZONTAL CARD -->
     <nav class="card-parallax animate-on-load">
-        <a href="/SHOP/kaos.html">
+        <a href="SHOP/kaos.php">
             <div class="parallax-card" onmousemove="handleMouseMove(this, event)" onmouseleave="handleMouseLeave(this)">
                 <div class="card-img-container">
-                    <img src="/ASSETS/bajuberanda.jpeg" class="card-img-top" alt="Tshirt">
+                    <img src="ASSETS/bajuberanda.jpeg" class="card-img-top" alt="Tshirt">
                     <div class="card-hover-effect"></div>
                 </div>
                 <div class="card-body">
@@ -575,10 +640,10 @@
             </div>
         </a>
 
-        <a href="/SHOP/celana.html">
+        <a href="SHOP/celana.php">
             <div class="parallax-card" onmousemove="handleMouseMove(this, event)" onmouseleave="handleMouseLeave(this)">
                 <div class="card-img-container">
-                    <img src="/ASSETS/celanaberanda.jpeg" class="card-img-top" alt="Pants">
+                    <img src="ASSETS/celanaberanda.jpeg" class="card-img-top" alt="Pants">
                     <div class="card-hover-effect"></div>
                 </div>
                 <div class="card-body">
@@ -591,10 +656,10 @@
             </div>
         </a>
 
-        <a href="/SHOP/topi.html">
+        <a href="shop/topi.php">
             <div class="parallax-card" onmousemove="handleMouseMove(this, event)" onmouseleave="handleMouseLeave(this)">
                 <div class="card-img-container">
-                    <img src="/ASSETS/Caps/cap 8.jpeg" class="card-img-top" alt="Cap">
+                    <img src="ASSETS/Caps/cap 8.jpeg" class="card-img-top" alt="Cap">
                     <div class="card-hover-effect"></div>
                 </div>
                 <div class="card-body">
@@ -607,10 +672,10 @@
             </div>
         </a>
 
-        <a href="/SHOP/jacket.html">
+        <a href="shop/jacket.php">
             <div class="parallax-card" onmousemove="handleMouseMove(this, event)" onmouseleave="handleMouseLeave(this)">
                 <div class="card-img-container">
-                    <img src="/ASSETS/jacketberanda.jpeg" class="card-img-top" alt="Jacket">
+                    <img src="ASSETS/jacketberanda.jpeg" class="card-img-top" alt="Jacket">
                     <div class="card-hover-effect"></div>
                 </div>
                 <div class="card-body">
@@ -625,50 +690,52 @@
     </nav>
 
     <!-- FOOTER -->
-    <div class="marquee bg-dark text-white py-2 animate-on-load">
-        <span style="font-size: 1.2rem;">🔥 Temukan Koleksi Terbaru Jackduls&reg; | 👠🛍👕👢👚👖👗👞👟👛🛒 | Shop Now! 🔥</span>
+    <div class="marquee bg-black text-white py-2 animate-on-load">
+        <span style="font-size: 1.2rem;">🔥 Temukan Koleksi Terbaru Jackduls&reg; | 👠🛍👕👢👚👖👗👞👟👛🛒 | Shop Now!
+            🔥</span>
     </div>
-    <footer class="bg-dark text-white pt-4">
-        <div class="container text-center text-md-start">
-            <div class="row">
-                <!-- Branding -->
-                <div class="col-md-4 mb-4">
-                    <h5 class="fw-bold">JACKDULS</h5>
-                    <p class="text-muted">Fashion that fits your freedom. Discover your style with JACKDULS Pants®.
-                    </p>
-                </div>
+    <!-- FOOTER -->
+        <footer class="bg-black text-white pt-4">
+            <div class="container text-center text-md-start">
+                <div class="row">
+                    <!-- Branding -->
+                    <div class="col-md-4 mb-4">
+                        <h5 class="fw-bold">JACKDULS</h5>
+                        <p class="">Fashion that fits your freedom. Discover your style with JACKDULS Pants®.
+                        </p>
+                    </div>
 
-                <!-- Links -->
-                <div class="col-md-4 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="/" class="text-white text-decoration-none">Home</a></li>
-                        <li><a href="/SHOP/kaos.html" class="text-white text-decoration-none">Shop</a></li>
-                    </ul>
-                </div>
+                    <!-- Links -->
+                    <div class="col-md-4 mb-4">
+                        <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="index.php" class="text-white text-decoration-none">Home</a></li>
+                            <li><a href="SHOP/kaos.php" class="text-white text-decoration-none">Shop</a></li>
+                        </ul>
+                    </div>
 
-                <!-- Social -->
-                <div class="col-md-4 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-3">Follow Us</h6>
-                    <a href="https://www.instagram.com/jackduls/" target="_blank"
-                        class="text-white text-decoration-none d-block mb-2">
-                        Instagram
-                    </a>
-                    <a href="https://www.instagram.com/jackduls/" target="_blank"
-                        class="text-white text-decoration-none d-block mb-2">
-                        TikTok
-                    </a>
-                    <a href="https://www.instagram.com/jackduls/" class="text-white text-decoration-none d-block">
-                        Email Us
-                    </a>
+                    <!-- Social -->
+                    <div class="col-md-4 mb-4">
+                        <h6 class="text-uppercase fw-bold mb-3">Follow Us</h6>
+                        <a href="https://www.instagram.com/jackduls/" target="_blank"
+                            class="text-white text-decoration-none d-block mb-2">
+                            Instagram
+                        </a>
+                        <a href="https://www.instagram.com/jackduls/" target="_blank"
+                            class="text-white text-decoration-none d-block mb-2">
+                            TikTok
+                        </a>
+                        <a href="https://www.instagram.com/jackduls/" class="text-white text-decoration-none d-block">
+                            Email Us
+                        </a>
+                    </div>
+                </div>
+                <hr class="bg-light" />
+                <div class="text-center pb-3">
+                    &copy; 2024 JACKDULS - All Rights Reserved
                 </div>
             </div>
-            <hr class="bg-light" />
-            <div class="text-center pb-3">
-                &copy; 2024 JACKDULS - All Rights Reserved
-            </div>
-        </div>
-    </footer>
+        </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -756,5 +823,4 @@
         });
     </script>
 </body>
-
 </html>
